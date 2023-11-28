@@ -1,4 +1,5 @@
-﻿using LogicLayer.Products;
+﻿using LogicLayer.Fabric;
+using LogicLayer.Products;
 
 namespace LogicLayer
 {
@@ -11,6 +12,7 @@ namespace LogicLayer
         private Workshop workshop;
         private Stock stock;
         private ClientService clients;
+        private ProductFactory productFactory;
         #endregion
 
         #region Properties 
@@ -66,10 +68,7 @@ namespace LogicLayer
             workshop = new Workshop();
             stock = new Stock();
             clients = new ClientService();
-            //Enregistrement des objets et leurs créateur
-            ProductFactory.Instance.Register("bike", new BikeCreator());
-            ProductFactory.Instance.Register("car", new CarCreator());
-            ProductFactory.Instance.Register("scooter", new ScooterCreator());
+            productFactory = new ProductFactory();
         }
         #endregion
 
@@ -125,7 +124,7 @@ namespace LogicLayer
             Product p;
             try
             {
-                p = ProductFactory.Instance.Creer(type);
+                p = productFactory.Creer(type);
             }
             catch
             {
@@ -196,7 +195,7 @@ namespace LogicLayer
         /// </summary>
         public void UpdateBuying()
         {
-            foreach (string product in ProductFactory.Instance.Products)
+            foreach (string product in productFactory.Products)
             {
                 if (clients.WantToBuy(product)) //Des clients veulent acheter le produit
                 {

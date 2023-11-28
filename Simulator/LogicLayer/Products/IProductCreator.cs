@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicLayer
+namespace LogicLayer.Products
 {
     /// <summary>
     /// Interface des créateurs de produit
     /// </summary>
     public interface IProductCreator
-    {   
+    {
         /// <summary>
         /// Renvoi le produit
         /// </summary>

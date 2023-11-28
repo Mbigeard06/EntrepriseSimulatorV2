@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LogicLayer.Products;
 
-namespace LogicLayer
+namespace LogicLayer.Fabric
 {
     /// <summary>
     /// Fabric de product Factory
@@ -12,35 +13,16 @@ namespace LogicLayer
     public class ProductFactory
     {
         /// <summary>
-        /// Instance privée du singleton
-        /// </summary>
-        private static ProductFactory instance;
-        /// <summary>
-        /// Instance public du singleton
-        /// </summary>
-        public static ProductFactory Instance
-        {
-            get{
-            
-                if (instance == null)
-                {
-                    instance = new ProductFactory();
-                }
-                return instance;
-            }
-        }
-
-        /// <summary>
         /// Dictionnaire qui associe le nom des produits à leurs objets.
         /// </summary>
-        private Dictionary<string, IProductCreator> products = new Dictionary<string, IProductCreator>();
+        private Dictionary<string, IProductCreator> products;
 
         /// <summary>
         /// Enregistre un produit dans la factory.
         /// </summary>
         /// <param name="productName">Nom du produit.</param>
         /// <param name="productCreator">Createur du produit.</param>
-        public void Register(string productName, IProductCreator productCreator) 
+        public void Register(string productName, IProductCreator productCreator)
         {
             products[productName] = productCreator;
         }
@@ -53,7 +35,7 @@ namespace LogicLayer
         public Product Creer(string productName)
         {
             Product product = null;
-            if(products.ContainsKey(productName))
+            if (products.ContainsKey(productName))
             {
                 product = products[productName].Creer();
             }
@@ -68,8 +50,12 @@ namespace LogicLayer
         /// <summary>
         /// Constructeur du singleton.
         /// </summary>
-        private ProductFactory() { }
-        
+        public ProductFactory() 
+        {
+            products = new Dictionary<string, IProductCreator>();
+            Initialiser.InitFactory(this);
+        }
+
     }
 
 }
