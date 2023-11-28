@@ -10,6 +10,9 @@ namespace TestLogicLayer
 {
     public class TestProductFactory
     {
+        /// <summary>
+        /// Test sur FabricProduct.
+        /// </summary>
         [Fact]
         public void TestFactory()
         {

@@ -1,4 +1,6 @@
-﻿namespace LogicLayer
+﻿using LogicLayer.Products;
+
+namespace LogicLayer
 {
     /// <summary>
     /// Enterprise simulation
@@ -37,11 +39,11 @@
         {
             get => employees - EmployeesWorkshop;
         }
-       
+
         /// <summary>
         /// Gets the number of employees working in the workshop
         /// </summary>
-        public int EmployeesWorkshop { get => workshop.NbEmployees; } 
+        public int EmployeesWorkshop { get => workshop.NbEmployees; }
 
         /// <summary>
         /// Gets the total amount of stock
@@ -60,10 +62,14 @@
         {
             money = 300000;
             employees = 4;
-            materials = 100;  
+            materials = 100;
             workshop = new Workshop();
             stock = new Stock();
             clients = new ClientService();
+            //Enregistrement des objets et leurs créateur
+            ProductFactory.Instance.Register("bike", new BikeCreator());
+            ProductFactory.Instance.Register("car", new CarCreator());
+            ProductFactory.Instance.Register("scooter", new ScooterCreator());
         }
         #endregion
 
@@ -117,19 +123,13 @@
         public void MakeProduct(string type)
         {
             Product p;
-            switch(type)
+            try
             {
-                case "bike":
-                    p = new Products.Bike();
-                    break;
-                case "scooter":
-                    p = new Products.Scooter();
-                    break;
-                case "car":
-                    p = new Products.Car();
-                    break;
-                default:
-                    throw new ProductUnknown();
+                p = ProductFactory.Instance.Creer(type);
+            }
+            catch
+            {
+                throw new ProductUnknown();
             }
             // test if the product can be build
             if (materials < p.MaterialsNeeded)
@@ -149,9 +149,9 @@
         public void UpdateProductions()
         {
             // update informations about productions
-            var list = workshop.ProductsDone(); 
+            var list = workshop.ProductsDone();
             // add finish products in stock
-            foreach(var product in list)
+            foreach (var product in list)
             {
                 stock.Add(product);
                 workshop.Remove(product);
@@ -195,25 +195,20 @@
         /// Update the buying status
         /// </summary>
         public void UpdateBuying()
-        {            
-            if(clients.WantToBuy("bike"))
+        {
+            foreach (string product in ProductFactory.Instance.Products)
             {
-                TrySell("bike");
-            }
-            else if(clients.WantToBuy("scooter"))
-            {
-                TrySell("scooter");
-            }
-            else if(clients.WantToBuy("car"))
-            {
-                TrySell("car");
+                if (clients.WantToBuy(product)) //Des clients veulent acheter le produit
+                {
+                    TrySell(product);
+                }
             }
         }
 
         private void TrySell(string type)
         {
             Product? p = stock.Find(type);
-            if(p!=null)
+            if (p != null)
             {
                 stock.Remove(p);
                 money += p.Price;
@@ -225,7 +220,7 @@
         /// update client needs
         /// </summary>
         public void UpdateClients()
-        {            
+        {
             clients.UpdateClients();
         }
 
