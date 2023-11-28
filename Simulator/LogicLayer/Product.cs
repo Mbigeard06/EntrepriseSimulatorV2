@@ -38,5 +38,16 @@ namespace LogicLayer
         /// Gets the price of the product
         /// </summary>
         public abstract int Price { get; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Product product &&
+                   MaterialsNeeded == product.MaterialsNeeded &&
+                   EmployeesNeeded == product.EmployeesNeeded &&
+                   TimeToBuild == product.TimeToBuild &&
+                   Name == product.Name &&
+                   SpaceToStock == product.SpaceToStock &&
+                   Price == product.Price;
+        }
     }
 }
