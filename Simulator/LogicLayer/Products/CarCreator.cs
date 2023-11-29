@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace LogicLayer.Products
 {
     /// <summary>
-    /// Classe de création d'une voiture
+    /// Class of car constructor.
     /// </summary>
     public class CarCreator : IProductCreator
     {
         /// <summary>
-        /// Crée une nouvelle voiture.
+        /// Create a new car.
         /// </summary>
-        /// <returns>Renvoi la voiture</returns>
+        /// <returns>Return a car</returns>
         public Product Creer()
         {
             return new Car();

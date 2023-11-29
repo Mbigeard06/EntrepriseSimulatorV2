@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace LogicLayer.Products
 {
     /// <summary>
-    /// Interface des créateurs de produit
+    /// Interface of product creators.
     /// </summary>
     public interface IProductCreator
     {
         /// <summary>
-        /// Renvoi le produit
+        /// Return a product.
         /// </summary>
         /// <returns></returns>
         Product Creer();

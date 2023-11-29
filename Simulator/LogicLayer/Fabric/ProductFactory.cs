@@ -8,29 +8,29 @@ using LogicLayer.Products;
 namespace LogicLayer.Fabric
 {
     /// <summary>
-    /// Fabric de product Factory
+    /// Product factory
     /// </summary>
     public class ProductFactory
     {
         /// <summary>
-        /// Dictionnaire qui associe le nom des produits à leurs objets.
+        /// Dictionnary that associates a product name and its constructor.
         /// </summary>
         private Dictionary<string, IProductCreator> products;
 
         /// <summary>
-        /// Enregistre un produit dans la factory.
+        /// Reguster a product in the factory
         /// </summary>
-        /// <param name="productName">Nom du produit.</param>
-        /// <param name="productCreator">Createur du produit.</param>
+        /// <param name="productName">Product name.</param>
+        /// <param name="productCreator">Product constructor.</param>
         public void Register(string productName, IProductCreator productCreator)
         {
             products[productName] = productCreator;
         }
 
         /// <summary>
-        /// Renvoi le produit crée, sil a déja été enregistré.
+        /// Return the product if it is registred.
         /// </summary>
-        /// <param name="productName">produit à crée</param>
+        /// <param name="productName">product to create</param>
         /// <returns></returns>
         public Product Creer(string productName)
         {
@@ -43,12 +43,13 @@ namespace LogicLayer.Fabric
         }
 
         /// <summary>
-        /// Renvoi la liste des noms de jeu enregistrés.
+        /// Return the products registred.
         /// </summary>
+        /// <returns>List of the products</returns>
         public string[] Products { get { return products.Keys.ToArray(); } }
 
         /// <summary>
-        /// Constructeur du singleton.
+        /// Constructor of the fabric.
         /// </summary>
         public ProductFactory() 
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace LogicLayer.Fabric
 {
     /// <summary>
-    /// Classe pour initialiser la fabric 
+    /// Classe to initialize the fabric.
     /// </summary>
     public class Initialiser
     {
