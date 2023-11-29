@@ -13,6 +13,7 @@ namespace LogicLayer
         private Stock stock;
         private ClientService clients;
         private ProductFactory productFactory;
+        private System.Threading.Timer timer;
         #endregion
 
         #region Properties 
@@ -69,6 +70,8 @@ namespace LogicLayer
             stock = new Stock();
             clients = new ClientService();
             productFactory = new ProductFactory();
+            timer = new Timer(EndOfMonth);
+            timer.Change(0, LogicLayer.Constants.MONTH_TIME);
         }
         #endregion
 
@@ -233,6 +236,20 @@ namespace LogicLayer
         {
             return clients.GetAskFor(type);
         }
+
+        private void EndOfMonth(object? state)
+        {
+            PayEmployees();
+        }
+
+        /// <summary>
+        /// Destructor of the class.
+        /// </summary>
+        ~Enterprise()
+        {
+            timer.Dispose();
+        }
+
         #endregion
 
 

@@ -62,7 +62,6 @@ namespace Simulator
             {
                 try
                 {
-                    enterprise.PayEmployees();
                     enterprise.UpdateClients();
                 }
                 catch (LogicLayer.NotEnoughMoney)
@@ -200,5 +199,6 @@ namespace Simulator
         {
             BuildProduct("car");
         }
+
     }
 }
