@@ -24,6 +24,10 @@ namespace LogicLayer.Fabric
             productFactory.Register("scooter", new ScooterCreator());
         }
 
+        /// <summary>
+        /// Init the client demands and the demands probability.
+        /// </summary>
+        /// <param name="clientService"></param>
         public static void InitClients(ClientService clientService)
         {
             clientService.InitProbs("car", 10);
