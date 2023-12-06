@@ -1,4 +1,5 @@
 ﻿using LogicLayer.Fabric;
+using LogicLayer.Observator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace LogicLayer
     /// <summary>
     /// Part of company, who deal with clients needs
     /// </summary>
-    public class ClientService
+    public class ClientService : Subject
     {
         private Random r;
         private Dictionary<string, int> needs;
@@ -35,6 +36,7 @@ namespace LogicLayer
             foreach(string type in demandProbs.Keys)
             {
                 needs[type] += ProbaToClients(demandProbs[type]);
+                NotifyClientNeedsChange(type, needs[type]);
             }
         }
         /// <summary>
@@ -82,6 +84,7 @@ namespace LogicLayer
         {
             needs[type] -= 10;
             if (needs[type] < 0) needs[type] = 0;
+            NotifyClientNeedsChange(type, needs[type]);
         }
 
         /// <summary>
@@ -92,6 +95,7 @@ namespace LogicLayer
         public void InitNeeds(string type, int need)
         {
             needs[type] = need;
+            NotifyClientNeedsChange(type, needs[type]);
         }
 
     }

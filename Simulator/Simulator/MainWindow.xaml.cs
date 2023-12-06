@@ -1,4 +1,5 @@
-﻿using LogicLayer.Observator;
+﻿using LogicLayer;
+using LogicLayer.Observator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,9 +101,6 @@ namespace Simulator
             scootStock.Content = enterprise.GetStock("scooter").ToString();
             carStock.Content = enterprise.GetStock("car").ToString();
 
-            bikeAsk.Content = enterprise.GetAskClients("bike").ToString();
-            scootAsk.Content = enterprise.GetAskClients("scooter").ToString();
-            carAsk.Content = enterprise.GetAskClients("car").ToString();
         }
 
         private void BuyMaterials(object sender, RoutedEventArgs e)
@@ -245,6 +243,31 @@ namespace Simulator
             Dispatcher.Invoke(() =>
             {
                 totalStock.Content = stock.ToString() + " %";
+            });
+        }
+
+        /// <summary>
+        /// Update the client needs.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="need"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void ClientNeedsChange(string type, int need)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                switch (type)
+                {
+                    case "bike":
+                        bikeAsk.Content = need.ToString(); 
+                        break;
+                    case "scooter":
+                        scootAsk.Content = need.ToString();
+                        break;
+                    default:
+                        carAsk.Content = need.ToString();
+                        break;
+                }
             });
         }
     }

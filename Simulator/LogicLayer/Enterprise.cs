@@ -7,7 +7,7 @@ namespace LogicLayer
     /// <summary>
     /// Enterprise simulation
     /// </summary>
-    public class Enterprise : Subject
+    public class Enterprise : Subject, IObserver
     {
         #region associations
         private Workshop workshop;
@@ -103,6 +103,7 @@ namespace LogicLayer
             workshop = new Workshop();
             stock = new Stock();
             clients = new ClientService();
+            clients.Register(this);
             productFactory = new ProductFactory();
             timer = new Timer(EndOfMonth);
             timer.Change(0, LogicLayer.Constants.MONTH_TIME);
@@ -279,6 +280,55 @@ namespace LogicLayer
         private void EndOfMonth(object? state)
         {
             PayEmployees();
+        }
+
+        /// <summary>
+        /// Notify the corporate observer that the amount of money has changed.
+        /// </summary>
+        /// <param name="money"></param>
+        public void MoneyChange(int money)
+        {
+            NotifyMoneyChange(money);
+        }
+
+        /// <summary>
+        /// Notify the corporate observer that the amount of materiels has changed.
+        /// </summary>
+        /// <param name="materials"></param>
+        public void MaterialChange(int materials)
+        {
+            MaterialChange(materials);
+        }
+
+        /// <summary>
+        /// Notify the corporate observer that the number of employees has changed.
+        /// </summary>
+        /// <param name="free"></param>
+        /// <param name="total"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void EmployeesChange(int free, int total)
+        {
+            NotifyEmployeesChange(free, total);
+        }
+
+        /// <summary>
+        /// Notify the corporate observer that the amount of money has changed.
+        /// </summary>
+        /// <param name="stock"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void StockChange(int stock)
+        {
+            NotifyStockChange(stock);
+        }
+
+        /// <summary>
+        /// Notify the corporate observer that the clients needs has changed.
+        /// <param name="type"></param>
+        /// <param name="need"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void ClientNeedsChange(string type, int need)
+        {
+            NotifyClientNeedsChange(type, need);
         }
 
         /// <summary>
