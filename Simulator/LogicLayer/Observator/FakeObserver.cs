@@ -38,5 +38,10 @@ namespace LogicLayer.Observator
         {
             this.totalStock = stock;
         }
+
+        public void ClientNeedsChange(string type, int need)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

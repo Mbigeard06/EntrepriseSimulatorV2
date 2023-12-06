@@ -74,11 +74,24 @@ namespace LogicLayer.Observator
         /// Notify the observators that the stock has changed.
         /// </summary>
         /// <param name="stock">New stock</param>
-        public void NotifyStockChange(int stock)
+        protected void NotifyStockChange(int stock)
         {
             foreach(IObserver observer in observers)
             {
                 observer.StockChange(stock);
+            }
+        }
+
+        /// <summary>
+        /// Notify the observators that the clients needs has changed.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="need"></param>
+        protected void NotifyClientNeedsChange(string type, int need)
+        {
+            foreach(IObserver observer in observers)
+            {
+                observer.ClientNeedsChange(type, need);
             }
         }
     }

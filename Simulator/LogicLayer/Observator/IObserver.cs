@@ -35,5 +35,12 @@ namespace LogicLayer.Observator
         /// </summary>
         /// <param name="stock"></param>
         public void StockChange(int stock);
+
+        /// <summary>
+        /// Triggered when the clients needs changes.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="need"></param>
+        public void ClientNeedsChange(string type, int need);
     }
 }   
