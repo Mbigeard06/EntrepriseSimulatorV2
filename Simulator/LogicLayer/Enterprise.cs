@@ -18,6 +18,7 @@ namespace LogicLayer
         #endregion
 
         #region Properties 
+        private int money;
         /// <summary>
         /// Gets the amount of money that enterprise disposes
         /// </summary>
@@ -30,23 +31,44 @@ namespace LogicLayer
             set
             {
                 money = value;
+                //Notify the changes to the observator.
                 NotifyMoneyChange(value);
             }
         }
-        private int money;
-
         private int materials;
         /// <summary>
         /// Gets the amount of materials that enterprise disposes
         /// </summary>
-        public int Materials { get => materials; }
-
+        public int Materials
+        {
+            get
+            {
+                return materials;
+            }
+            set
+            {
+                materials = value;
+                //Notify the changes to the observator.
+                NotifyMaterialChange(value);
+            }
+        }
         private int employees;
         /// <summary>
         /// Gets the number of employees
         /// </summary>
-        public int Employees { get => employees; }
-
+        public int Employees
+        {
+            get
+            {
+                return employees;
+            }
+            set
+            {
+                employees = value;
+                //Notify the changes to the observator.
+                NotifyEmployeesChange(FreeEmployees,value);
+            }
+        }
         /// <summary>
         /// Gets the number of free employees (they can work)
         /// </summary>
@@ -98,7 +120,7 @@ namespace LogicLayer
             if (money < cost)
                 throw new NotEnoughMoney();
             Money -= cost;
-            materials += Constants.MATERIALS;
+            Materials += Constants.MATERIALS;
         }
 
         /// <summary>
@@ -106,7 +128,7 @@ namespace LogicLayer
         /// </summary>        
         public void Hire()
         {
-            ++employees;
+            ++Employees;
         }
 
         /// <summary>
@@ -124,7 +146,7 @@ namespace LogicLayer
             if (FreeEmployees < 1)
                 throw new EmployeeWorking();
             Money -= cost;
-            employees--;
+            Employees--;
         }
 
         /// <summary>
@@ -146,12 +168,12 @@ namespace LogicLayer
                 throw new ProductUnknown();
             }
             // test if the product can be build
-            if (materials < p.MaterialsNeeded)
+            if (Materials < p.MaterialsNeeded)
                 throw new NotEnoughMaterials();
-            if (employees - EmployeesWorkshop < p.EmployeesNeeded)
+            if (Employees - EmployeesWorkshop < p.EmployeesNeeded)
                 throw new NoEmployee();
 
-            materials -= p.MaterialsNeeded; // consume materials
+            Materials -= p.MaterialsNeeded; // consume materials
             // start the building...
             workshop.StartProduction(p);
         }
