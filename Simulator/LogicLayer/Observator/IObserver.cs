@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 namespace LogicLayer.Observator
 {
     /// <summary>
-    /// Interface d'bserver de l'argent de l'entreprise
+    /// Observer interface of the corporate money
     /// </summary>
     public interface IObserver
     { 
-        ///
+        /// <summary>
+        /// Trigered when the corporate money evoluate.
+        /// </summary>
+        /// <param name="money">New amount of money.</param>
         public void MoneyChange(int money);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LogicLayer.Fabric;
+using LogicLayer.Observator;
 using LogicLayer.Products;
 
 namespace LogicLayer
@@ -6,7 +7,7 @@ namespace LogicLayer
     /// <summary>
     /// Enterprise simulation
     /// </summary>
-    public class Enterprise
+    public class Enterprise : Subject
     {
         #region associations
         private Workshop workshop;
@@ -20,7 +21,18 @@ namespace LogicLayer
         /// <summary>
         /// Gets the amount of money that enterprise disposes
         /// </summary>
-        public int Money { get => money; }
+        public int Money
+        {
+            get
+            {
+                return money;
+            }
+            set
+            {
+                money = value;
+                NotifyMoneyChange(value);
+            }
+        }
         private int money;
 
         private int materials;
@@ -85,7 +97,7 @@ namespace LogicLayer
             int cost = Constants.MATERIALS * Constants.COST_MATERIALS;
             if (money < cost)
                 throw new NotEnoughMoney();
-            money -= cost;
+            Money -= cost;
             materials += Constants.MATERIALS;
         }
 
@@ -111,7 +123,7 @@ namespace LogicLayer
                 throw new NotEnoughMoney();
             if (FreeEmployees < 1)
                 throw new EmployeeWorking();
-            money -= cost;
+            Money -= cost;
             employees--;
         }
 
@@ -190,7 +202,7 @@ namespace LogicLayer
             int cost = employees * Constants.SALARY;
             if (cost > money)
                 throw new NotEnoughMoney();
-            money -= cost;
+            Money -= cost;
         }
 
         /// <summary>
@@ -213,7 +225,7 @@ namespace LogicLayer
             if (p != null)
             {
                 stock.Remove(p);
-                money += p.Price;
+                Money += p.Price;
                 clients.Buy(type);
             }
         }
