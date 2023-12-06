@@ -11,6 +11,7 @@ namespace LogicLayer.Observator
     /// </summary>
     public class Subject
     {
+        //List of the observers.
         private List<IObserver> observers;
         public Subject() 
         {
@@ -42,6 +43,30 @@ namespace LogicLayer.Observator
             foreach (IObserver observer in observers)
             {
                 observer.MoneyChange(money);
+            }
+        }
+
+        /// <summary>
+        /// Notify the observator that the corporate stock of materials has changed
+        /// </summary>
+        /// <param name="material"></param>
+        protected void NotifyMaterialChange(int material)
+        {
+            foreach (IObserver observer in observers)
+            {
+                observer.MaterialChange(material);
+            }
+        }
+
+        /// <summary>
+        /// Notify the observator that the number of employee has changed.
+        /// </summary>
+        /// <param name="material"></param>
+        protected void NotifyEmployeesChange(int free, int total)
+        {
+            foreach (IObserver observer in observers)
+            {
+                observer.EmployeesChange(free, total);
             }
         }
     }
