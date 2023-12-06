@@ -35,6 +35,16 @@ namespace TestLogicLayer
             //check that the observator is targeted of the changes
             Assert.True(obs.Employees > employees);
             Assert.Equal(obs.Employees, e.Employees);
+
+            //Test for the stock
+            int stock = e.TotalStock;
+            e.MakeProduct("bike");
+            Thread.Sleep(LogicLayer.Constants.WEEK_TIME);
+            e.UpdateProductions();
+            //check that the observator is targeted of the changes
+            Assert.True(obs.TotalStock > stock);
+            Assert.Equal(obs.TotalStock, e.TotalStock);
+
         }
     }
 }

@@ -21,7 +21,7 @@ namespace LogicLayer.Observator
         /// Trigered when the corporate stock of materiels changes.
         /// </summary>
         /// <param name="materiels"></param>
-        public void MaterialChange(int materiels);
+        public void MaterialChange(int materials);
 
         /// <summary>
         /// Trigered when the numbrer of employees changes.
@@ -29,5 +29,11 @@ namespace LogicLayer.Observator
         /// <param name="free"></param>
         /// <param name="total"></param>
         public void EmployeesChange(int free, int total);
+
+        /// <summary>
+        /// Trigered when the stock changes.
+        /// </summary>
+        /// <param name="stock"></param>
+        public void StockChange(int stock);
     }
 }   

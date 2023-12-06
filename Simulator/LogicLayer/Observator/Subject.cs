@@ -35,7 +35,7 @@ namespace LogicLayer.Observator
         }
 
         /// <summary>
-        /// Notify the observator that the corporate money has changed.
+        /// Notify the observators that the corporate money has changed.
         /// </summary>
         /// <param name="money"></param>
         protected void NotifyMoneyChange(int money)
@@ -47,7 +47,7 @@ namespace LogicLayer.Observator
         }
 
         /// <summary>
-        /// Notify the observator that the corporate stock of materials has changed
+        /// Notify the observators that the corporate stock of materials has changed
         /// </summary>
         /// <param name="material"></param>
         protected void NotifyMaterialChange(int material)
@@ -59,7 +59,7 @@ namespace LogicLayer.Observator
         }
 
         /// <summary>
-        /// Notify the observator that the number of employee has changed.
+        /// Notify the observators that the number of employee has changed.
         /// </summary>
         /// <param name="material"></param>
         protected void NotifyEmployeesChange(int free, int total)
@@ -67,6 +67,18 @@ namespace LogicLayer.Observator
             foreach (IObserver observer in observers)
             {
                 observer.EmployeesChange(free, total);
+            }
+        }
+
+        /// <summary>
+        /// Notify the observators that the stock has changed.
+        /// </summary>
+        /// <param name="stock">New stock</param>
+        public void NotifyStockChange(int stock)
+        {
+            foreach(IObserver observer in observers)
+            {
+                observer.StockChange(stock);
             }
         }
     }

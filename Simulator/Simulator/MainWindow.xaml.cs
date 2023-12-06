@@ -92,11 +92,6 @@ namespace Simulator
             enterprise.UpdateProductions();
             enterprise.UpdateBuying();
             
-            totalStock.Content = enterprise.TotalStock.ToString()+" %";
-            materials.Content = enterprise.Materials.ToString();
-            employees.Content = enterprise.FreeEmployees.ToString()+"/"+enterprise.Employees.ToString();
-            
-
             bikesProd.Content = enterprise.GetProduction("bike").ToString();
             scootsProd.Content = enterprise.GetProduction("scooter").ToString();
             carsProd.Content = enterprise.GetProduction("car").ToString();
@@ -205,7 +200,7 @@ namespace Simulator
         }
 
         /// <summary>
-        /// Trigered when the corporate money changes.
+        /// Update the corporate money.
         /// </summary>
         /// <param name="money">New amount of money of the the corporate</param>
         public void MoneyChange(int newMoney)
@@ -213,6 +208,43 @@ namespace Simulator
             Dispatcher.Invoke(() =>
             {
                 money.Content = newMoney.ToString("C");
+            });
+        }
+
+        /// <summary>
+        /// Update the corporate material.
+        /// </summary>
+        /// <param name="materials">New amount of materials</param>
+        public void MaterialChange(int materials)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                this.materials.Content = materials.ToString();
+            });
+        }
+
+        /// <summary>
+        /// Update the corporate number of employees.
+        /// </summary>
+        /// <param name="free"></param>
+        /// <param name="total"></param>
+        public void EmployeesChange(int free, int total)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                employees.Content = free.ToString() + "/" + total.ToString();
+            });
+        }
+
+        /// <summary>
+        /// Update the corporate stock.
+        /// </summary>
+        /// <param name="stock">New Stock.</param>
+        public void StockChange(int stock)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                totalStock.Content = stock.ToString() + " %";
             });
         }
     }

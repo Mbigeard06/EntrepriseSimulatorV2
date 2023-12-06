@@ -192,6 +192,8 @@ namespace LogicLayer
                 stock.Add(product);
                 workshop.Remove(product);
             }
+            //Mise à jour du stock
+            NotifyStockChange(this.TotalStock);
 
         }
 
@@ -250,6 +252,9 @@ namespace LogicLayer
                 Money += p.Price;
                 clients.Buy(type);
             }
+            //Mise à jour du stock
+            NotifyStockChange(this.TotalStock);
+
         }
 
         /// <summary>

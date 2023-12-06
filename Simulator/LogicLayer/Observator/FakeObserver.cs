@@ -16,7 +16,9 @@ namespace LogicLayer.Observator
         private int money = 0;
         public int Money { get => money; }
         private int employees = 4;
-        public int Employees { get => employees; } 
+        public int Employees { get => employees; }
+        private int totalStock;
+        public int TotalStock { get => totalStock; }
         public void EmployeesChange(int free, int total)
         {
             this.employees = total;
@@ -30,6 +32,11 @@ namespace LogicLayer.Observator
         public void MoneyChange(int money)
         {
             this.money = money;
+        }
+
+        public void StockChange(int stock)
+        {
+            this.totalStock = stock;
         }
     }
 }
