@@ -25,7 +25,6 @@ namespace Simulator
     {
         private LogicLayer.Enterprise enterprise;
         private Timer timerSecond;
-        private Timer timerMonth;
         private Timer timerWeek;
         public MainWindow()
         {
@@ -34,8 +33,6 @@ namespace Simulator
             DataContext = enterprise;
             timerSecond = new Timer(TimerSecondTick);
             timerSecond.Change(0, LogicLayer.Constants.TIME_SLICE); 
-            timerMonth = new Timer(TimerMonthTick);
-            timerMonth.Change(0, LogicLayer.Constants.MONTH_TIME);
             timerWeek = new Timer(TimerWeekTick);
             timerWeek.Change(0, LogicLayer.Constants.WEEK_TIME);
             //Subscription of the observer
@@ -59,27 +56,6 @@ namespace Simulator
             {
                 // nothing to do every week...
             });
-        }
-
-        private void TimerMonthTick(object? data)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                try
-                {
-                    enterprise.UpdateClients();
-                }
-                catch (LogicLayer.NotEnoughMoney)
-                {
-                    timerSecond.Dispose();
-                    timerMonth.Dispose();
-
-                    MessageBox.Show("Not enough money to pay employees !");
-                    EndOfSimulation();
-                }
-            });
-            
-            
         }
 
         private void EndOfSimulation()
