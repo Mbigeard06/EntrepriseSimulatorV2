@@ -20,8 +20,8 @@ namespace LogicLayer.Fabric
         {
             //Initialise les produtis 
             productFactory.Register("bike", new BikeCreator());
-            productFactory.Register("car", new CarCreator());
             productFactory.Register("scooter", new ScooterCreator());
+            productFactory.Register("car", new CarCreator());
         }
 
         /// <summary>

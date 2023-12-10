@@ -42,5 +42,17 @@ namespace LogicLayer.Observator
         /// <param name="type"></param>
         /// <param name="need"></param>
         public void ClientNeedsChange(string type, int need);
+
+        /// <summary>
+        /// Trigered when the production of a product is done.
+        /// </summary>
+        /// <returns>The Product</returns>
+        public void ProductProductionDone(Product product);
+
+        /// <summary>
+        /// Trigered when the production of a product starts.
+        /// </summary>
+        /// <returns>The product</returns>
+        public void ProductProductionStart(Product product);
     }
 }   

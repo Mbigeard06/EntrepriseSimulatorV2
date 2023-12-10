@@ -43,5 +43,15 @@ namespace LogicLayer.Observator
         {
             throw new NotImplementedException();
         }
+
+        public void ProductProductionDone(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ProductProductionStart(Product product)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

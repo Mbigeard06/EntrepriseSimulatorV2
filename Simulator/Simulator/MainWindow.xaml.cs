@@ -26,7 +26,6 @@ namespace Simulator
     {
         private LogicLayer.Enterprise enterprise;
         private Timer timerSecond;
-        private Timer timerWeek;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,11 +33,10 @@ namespace Simulator
             DataContext = enterprise;
             timerSecond = new Timer(TimerSecondTick);
             timerSecond.Change(0, LogicLayer.Constants.TIME_SLICE); 
-            timerWeek = new Timer(TimerWeekTick);
-            timerWeek.Change(0, LogicLayer.Constants.WEEK_TIME);
             //Subscription of the observer
             this.enterprise.Register(this);
             InitPanelBuild();
+            InitPanelProd();
         }
 
         private void TimerSecondTick(object? data)
@@ -51,14 +49,6 @@ namespace Simulator
             
         }
 
-        private void TimerWeekTick(object? data)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                // nothing to do every week...
-            });
-        }
-
         private void EndOfSimulation()
         {
             MessageBox.Show("END OF SIMULATION");
@@ -67,12 +57,7 @@ namespace Simulator
 
         private void UpdateScreen()
         {
-            enterprise.UpdateProductions();
             enterprise.UpdateBuying();
-            
-            bikesProd.Content = enterprise.GetProduction("bike").ToString();
-            scootsProd.Content = enterprise.GetProduction("scooter").ToString();
-            carsProd.Content = enterprise.GetProduction("car").ToString();
 
             bikeStock.Content = enterprise.GetStock("bike").ToString();
             scootStock.Content = enterprise.GetStock("scooter").ToString();
@@ -102,7 +87,6 @@ namespace Simulator
             try
             {
                 enterprise.Hire();
-                UpdateScreen();
             }
             catch (Exception x)
             {
@@ -140,7 +124,6 @@ namespace Simulator
             try
             {
                 enterprise.MakeProduct(s);
-                UpdateScreen();
             }
             catch (LogicLayer.ProductUnknown)
             {
@@ -263,6 +246,80 @@ namespace Simulator
                 // add the button to the parent panel
                 panelBuild.Children.Add(button);
             }
+        }
+        /// <summary>
+        /// Initialize the panel prod.
+        /// </summary>
+        public void InitPanelProd()
+        {
+            //On récupère la liste des produits
+            String[] products = this.enterprise.NamesOfProducts;
+            foreach (string type in products)
+            {
+                // Création de la bordure
+                Border border = new Border();
+                border.BorderBrush = System.Windows.Media.Brushes.Black;
+                border.BorderThickness = new System.Windows.Thickness(1);
+                border.Margin = new Thickness(2);
+
+                // Création du StackPanel à l'intérieur de la bordure
+                var panel = new StackPanel();
+
+                // Création de l'image
+                System.Windows.Controls.Image image = new System.Windows.Controls.Image();
+                // Spécifiez correctement la source de l'image
+                image.Source = new BitmapImage(new Uri($"pack://application:,,,/Simulator;component/Images/{type}.png"));
+                // Spécifiez éventuellement la taille de l'image
+                image.Width = 40; // ajustez la taille selon vos besoins
+                // Ajouter l'image au StackPanel
+                panel.Children.Add(image);
+
+                // Création d'un label avec le bon style et ajout au StackPanel
+                Label label = new Label();
+                label.Name = type + "sProd";
+                label.Content = "0";
+                label.Style = System.Windows.Application.Current.TryFindResource("legend") as Style;
+                panel.Children.Add(label);
+                // Ajouter le StackPanel à la bordure
+                border.Child = panel;
+
+                // Ajouter la bordure au panel parent (panelProd)
+                panelProd.Children.Add(border);
+            }
+        }
+
+        /// <summary>
+        /// Update the corporate production when a product production is done.
+        /// </summary>
+        /// <param name="p">Product done.</param>
+        public void ProductProductionDone(Product p)
+        {
+            string name = p.Name + "sProd";
+            Dispatcher.Invoke(() =>
+            {
+                var test = UIChildFinder.FindChild(panelProd, name, typeof(Label));
+                if (test is Label label)
+                {
+                    label.Content = enterprise.GetProduction(p.Name).ToString();
+                }
+            });
+        }
+
+        /// <summary>
+        /// Update the corporate production when a product production has started.
+        /// </summary>
+        /// <param name="p">Product whose the production has started.</param>
+        public void ProductProductionStart(Product p)
+        {
+            string name = p.Name + "sProd";
+            Dispatcher.Invoke(() =>
+            {
+                var test = UIChildFinder.FindChild(panelProd, name, typeof(Label));
+                if (test is Label label)
+                {
+                    label.Content = enterprise.GetProduction(p.Name).ToString();
+                }
+            });
         }
     }
 }

@@ -94,5 +94,29 @@ namespace LogicLayer.Observator
                 observer.ClientNeedsChange(type, need);
             }
         }
+
+        /// <summary>
+        /// Notify that the production of a product has started.
+        /// </summary>
+        /// <param name="product"></param>
+        protected void NotifyProductionStart(Product product)
+        {
+            foreach (IObserver observer in observers)
+            {
+                observer.ProductProductionStart(product);
+            }
+        }
+
+        /// <summary>
+        /// Notify that the production of a product.
+        /// </summary>
+        /// <param name="product"></param>
+        protected void NotifyProductionDone(Product product)
+        {
+            foreach (IObserver observer in observers)
+            {
+                observer.ProductProductionDone(product);
+            }
+        }
     }
 }

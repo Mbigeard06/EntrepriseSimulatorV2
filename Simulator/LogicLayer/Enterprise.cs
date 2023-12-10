@@ -183,7 +183,9 @@ namespace LogicLayer
 
             Materials -= p.MaterialsNeeded; // consume materials
             // start the building...
-            workshop.StartProduction(p);
+            workshop.StartProduction(p, this);
+            ProductProductionStart(p);
+
         }
 
         /// <summary>
@@ -330,13 +332,39 @@ namespace LogicLayer
         }
 
         /// <summary>
-        /// Notify the corporate observer that the clients needs has changed.
+        /// Notify the corporate observers that the clients needs has changed.
         /// <param name="type"></param>
         /// <param name="need"></param>
         /// <exception cref="NotImplementedException"></exception>
         public void ClientNeedsChange(string type, int need)
         {
             NotifyClientNeedsChange(type, need);
+        }
+
+        /// <summary>
+        /// Notify the corporate observers that the production of a product is done.
+        /// </summary>
+        /// <param name="product"></param>
+        public void ProductProductionDone(Product product)
+        {
+            // update informations about productions
+            var list = workshop.ProductsDone();
+            // add finish products in stock
+            foreach (var prod in list)
+            {
+                stock.Add(prod);
+                workshop.Remove(prod);
+            }
+            NotifyProductionDone(product);
+        }
+
+        /// <summary>
+        /// Notify the corporate observers that the production of a product has just started.
+        /// </summary>
+        /// <param name="product"></param>
+        public void ProductProductionStart(Product product)
+        {
+            NotifyProductionStart(product);
         }
 
         /// <summary>

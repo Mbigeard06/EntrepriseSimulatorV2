@@ -56,7 +56,5 @@ namespace LogicLayer.Fabric
             products = new Dictionary<string, IProductCreator>();
             Initialiser.InitFactory(this);
         }
-
     }
-
 }
