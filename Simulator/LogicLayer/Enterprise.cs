@@ -87,6 +87,13 @@ namespace LogicLayer
         /// </summary>
         public int TotalStock { get => stock.TotalStock; }
 
+        /// <summary>
+        /// Returns the name of all the products.
+        /// </summary>
+        public string[] NamesOfProducts
+        {
+            get => this.productFactory.Products;
+        }
 
         #endregion
 
