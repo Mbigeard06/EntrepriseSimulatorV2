@@ -31,22 +31,10 @@ namespace Simulator
             InitializeComponent();
             enterprise = new LogicLayer.Enterprise();
             DataContext = enterprise;
-            timerSecond = new Timer(TimerSecondTick);
-            timerSecond.Change(0, LogicLayer.Constants.TIME_SLICE); 
             //Subscription of the observer
             this.enterprise.Register(this);
             InitPanelBuild();
             InitPanelProd();
-        }
-
-        private void TimerSecondTick(object? data)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                // every second, to update screen
-                UpdateScreen();
-            });
-            
         }
 
         private void EndOfSimulation()
@@ -57,12 +45,9 @@ namespace Simulator
 
         private void UpdateScreen()
         {
-            enterprise.UpdateBuying();
-
             bikeStock.Content = enterprise.GetStock("bike").ToString();
             scootStock.Content = enterprise.GetStock("scooter").ToString();
             carStock.Content = enterprise.GetStock("car").ToString();
-
         }
 
         private void BuyMaterials(object sender, RoutedEventArgs e)

@@ -14,7 +14,8 @@ namespace LogicLayer
         private Stock stock;
         private ClientService clients;
         private ProductFactory productFactory;
-        private System.Threading.Timer timer;
+        private System.Threading.Timer timerMonth;
+        private System.Threading.Timer timerSecond;
         #endregion
 
         #region Properties 
@@ -112,12 +113,23 @@ namespace LogicLayer
             clients = new ClientService();
             clients.Register(this);
             productFactory = new ProductFactory();
-            timer = new Timer(EndOfMonth);
-            timer.Change(0, LogicLayer.Constants.MONTH_TIME);
+            timerMonth = new Timer(EndOfMonth);
+            timerMonth.Change(0, LogicLayer.Constants.MONTH_TIME);
+            timerSecond = new Timer(TimerSecondTick);
+            timerSecond.Change(0, LogicLayer.Constants.TIME_SLICE);
         }
         #endregion
 
         #region methods
+        /// <summary>
+        /// Update the buying status every second.
+        /// </summary>
+        /// <param name="data"></param>
+        private void TimerSecondTick(object? data)
+        {
+            UpdateBuying();    
+        }
+
         /// <summary>
         /// Buy some materials
         /// </summary>
@@ -372,7 +384,8 @@ namespace LogicLayer
         /// </summary>
         ~Enterprise()
         {
-            timer.Dispose();
+            timerMonth.Dispose();
+            timerSecond.Dispose();
         }
 
         #endregion
