@@ -56,9 +56,9 @@ namespace LogicLayer.Observator
         public void ProductProductionStart(Product product);
 
         /// <summary>
-        /// Trigered when the stock of a product change.
+        /// Trigered when the stock of a product changes.
         /// </summary>
-        /// <param name="productType"></param>
+        /// <param name="productType">Product type whose stock changed.</param>
         public void ProductStockChange(string productType);
     }
 }

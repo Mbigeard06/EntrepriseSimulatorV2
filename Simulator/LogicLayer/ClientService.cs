@@ -33,7 +33,7 @@ namespace LogicLayer
         /// </summary>
         public void UpdateClients()
         {
-            foreach(string type in demandProbs.Keys)
+            foreach (string type in demandProbs.Keys)
             {
                 needs[type] += ProbaToClients(demandProbs[type]);
                 NotifyClientNeedsChange(type, needs[type]);
@@ -46,7 +46,7 @@ namespace LogicLayer
         /// <returns>number of potential clients</returns>
         /// <exception cref="ProductUnknown">If product is not known</exception>
         public int GetAskFor(string type)
-        {            
+        {
             if (!needs.ContainsKey(type))
                 throw new ProductUnknown();
 
@@ -73,13 +73,13 @@ namespace LogicLayer
         {
             if (!needs.ContainsKey(type))
                 throw new ProductUnknown();
-            return (r.NextDouble() * needs[type])*10 > 1;
+            return (r.NextDouble() * needs[type]) * 10 > 1;
         }
 
         /// <summary>
-        /// A product is bought, so a client do not want to buy anymore
+        /// A product is bought, so a client do not want to buy anymore.
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">Kind of product to buy</param>
         public void Buy(string type)
         {
             needs[type] -= 1;

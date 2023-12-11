@@ -315,7 +315,7 @@ namespace Simulator
         /// <summary>
         /// Update the stock of a product.
         /// </summary>
-        /// <param name="productType">Product type.</param>
+        /// <param name="productType">Product type</param>
         public void ProductStockChange(string productType)
         {
             string name = productType + "Stock";

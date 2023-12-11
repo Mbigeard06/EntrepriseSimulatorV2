@@ -15,7 +15,7 @@ namespace LogicLayer.Fabric
         /// <summary>
         /// Registre the product of the factory.
         /// </summary>
-        /// <param name="productFactory"></param>
+        /// <param name="productFactory">Product factory to initialize.</param>
         public static void InitFactory(ProductFactory productFactory)
         {
             //Initialise les produtis 
@@ -27,7 +27,7 @@ namespace LogicLayer.Fabric
         /// <summary>
         /// Init the client demands and the demands probability.
         /// </summary>
-        /// <param name="clientService"></param>
+        /// <param name="clientService">Client service to initialize.</param>
         public static void InitClients(ClientService clientService)
         {
             clientService.InitProbs("car", 10);
