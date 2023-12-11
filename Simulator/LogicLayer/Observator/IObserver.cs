@@ -31,7 +31,7 @@ namespace LogicLayer.Observator
         public void EmployeesChange(int free, int total);
 
         /// <summary>
-        /// Trigered when the stock changes.
+        /// Trigered when the global stock changes.
         /// </summary>
         /// <param name="stock"></param>
         public void StockChange(int stock);
@@ -54,5 +54,11 @@ namespace LogicLayer.Observator
         /// </summary>
         /// <returns>The product</returns>
         public void ProductProductionStart(Product product);
+
+        /// <summary>
+        /// Trigered when the stock of a product change.
+        /// </summary>
+        /// <param name="productType"></param>
+        public void ProductStockChange(string productType);
     }
-}   
+}

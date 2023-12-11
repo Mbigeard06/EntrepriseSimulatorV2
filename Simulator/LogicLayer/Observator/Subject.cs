@@ -13,7 +13,7 @@ namespace LogicLayer.Observator
     {
         //List of the observers.
         private List<IObserver> observers;
-        public Subject() 
+        public Subject()
         {
             observers = new List<IObserver>();
         }
@@ -76,7 +76,7 @@ namespace LogicLayer.Observator
         /// <param name="stock">New stock</param>
         protected void NotifyStockChange(int stock)
         {
-            foreach(IObserver observer in observers)
+            foreach (IObserver observer in observers)
             {
                 observer.StockChange(stock);
             }
@@ -89,7 +89,7 @@ namespace LogicLayer.Observator
         /// <param name="need"></param>
         protected void NotifyClientNeedsChange(string type, int need)
         {
-            foreach(IObserver observer in observers)
+            foreach (IObserver observer in observers)
             {
                 observer.ClientNeedsChange(type, need);
             }
@@ -116,6 +116,18 @@ namespace LogicLayer.Observator
             foreach (IObserver observer in observers)
             {
                 observer.ProductProductionDone(product);
+            }
+        }
+
+        /// <summary>
+        /// Notify that a product stock changed.
+        /// </summary>
+        /// <param name="typeProduct"></param>
+        protected void NotifyProductStockChange(string typeProduct)
+        {
+            foreach (IObserver observer in observers)
+            {
+                observer.ProductStockChange(typeProduct);
             }
         }
     }

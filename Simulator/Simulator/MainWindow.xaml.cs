@@ -25,16 +25,19 @@ namespace Simulator
     public partial class MainWindow : Window, IObserver
     {
         private LogicLayer.Enterprise enterprise;
-        private Timer timerSecond;
         public MainWindow()
         {
             InitializeComponent();
             enterprise = new LogicLayer.Enterprise();
             DataContext = enterprise;
-            //Subscription of the observer
+            //Subscription of the observer.
             this.enterprise.Register(this);
+            //Init the different panels.
+            InitPanel(panelDemand, "Ask");
+            InitPanel(panelStock, "Stock");
+            InitPanel(panelProd, "sProd");
             InitPanelBuild();
-            InitPanelProd();
+
         }
 
         private void EndOfSimulation()
@@ -43,30 +46,27 @@ namespace Simulator
             Close();
         }
 
-        private void UpdateScreen()
-        {
-            bikeStock.Content = enterprise.GetStock("bike").ToString();
-            scootStock.Content = enterprise.GetStock("scooter").ToString();
-            carStock.Content = enterprise.GetStock("car").ToString();
-        }
-
         private void BuyMaterials(object sender, RoutedEventArgs e)
         {
             try
             {
                 enterprise.BuyMaterials();
-                UpdateScreen();
             }
-            catch(LogicLayer.NotEnoughMoney)
+            catch (LogicLayer.NotEnoughMoney)
             {
                 MessageBox.Show("Not enough money to buy materials !");
             }
-            catch(Exception x)
+            catch (Exception x)
             {
                 MessageBox.Show(x.Message);
             }
         }
 
+        /// <summary>
+        /// Hire an employee.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Hire(object sender, RoutedEventArgs e)
         {
             try
@@ -79,31 +79,39 @@ namespace Simulator
             }
         }
 
+        /// <summary>
+        /// Dismiss an employee.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Dismiss(object sender, RoutedEventArgs e)
         {
             try
             {
                 enterprise.Dismiss();
-                UpdateScreen();
             }
-            catch(LogicLayer.NoEmployee)
+            catch (LogicLayer.NoEmployee)
             {
                 MessageBox.Show("There is no employee to dismiss");
             }
-            catch(LogicLayer.NotEnoughMoney)
+            catch (LogicLayer.NotEnoughMoney)
             {
                 MessageBox.Show("There is not enough money to puy dismiss bonus");
             }
-            catch(LogicLayer.EmployeeWorking)
+            catch (LogicLayer.EmployeeWorking)
             {
                 MessageBox.Show("You can't dismiss no : employees working");
             }
-            catch(Exception x)
+            catch (Exception x)
             {
                 MessageBox.Show(x.Message);
             }
         }
 
+        /// <summary>
+        /// Build a product.
+        /// </summary>
+        /// <param name="s">type of the product.</param>
         private void BuildProduct(string s)
         {
             try
@@ -116,11 +124,11 @@ namespace Simulator
             }
             catch (LogicLayer.NotEnoughMaterials)
             {
-                MessageBox.Show("You do not have suffisent materials to build a "+s);
+                MessageBox.Show("You do not have suffisent materials to build a " + s);
             }
             catch (LogicLayer.NoEmployee)
             {
-                MessageBox.Show("You do not have enough employees to build a "+s);
+                MessageBox.Show("You do not have enough employees to build a " + s);
             }
             catch (Exception x)
             {
@@ -155,8 +163,8 @@ namespace Simulator
         /// <summary>
         /// Update the corporate number of employees.
         /// </summary>
-        /// <param name="free"></param>
-        /// <param name="total"></param>
+        /// <param name="free">Employees that are not busy.</param>
+        /// <param name="total">Total of employees.</param>
         public void EmployeesChange(int free, int total)
         {
             Dispatcher.Invoke(() =>
@@ -180,35 +188,29 @@ namespace Simulator
         /// <summary>
         /// Update the client needs.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="need"></param>
+        /// <param name="type">Type of the need.</param>
+        /// <param name="need">New need.</param>
         /// <exception cref="NotImplementedException"></exception>
         public void ClientNeedsChange(string type, int need)
         {
+            string name = type + "Ask";
             Dispatcher.Invoke(() =>
             {
-                switch (type)
+                var test = UIChildFinder.FindChild(panelDemand, name, typeof(Label));
+                if (test is Label label)
                 {
-                    case "bike":
-                        bikeAsk.Content = need.ToString(); 
-                        break;
-                    case "scooter":
-                        scootAsk.Content = need.ToString();
-                        break;
-                    default:
-                        carAsk.Content = need.ToString();
-                        break;
+                    label.Content = enterprise.GetAskClients(type).ToString();
                 }
             });
         }
         /// <summary>
-        /// Initialize main Window panel.
+        /// Initialize main Window build panel.
         /// </summary>
         private void InitPanelBuild()
         {
             //On récupère la liste des produits
             String[] products = this.enterprise.NamesOfProducts;
-            foreach (string type in products) 
+            foreach (string type in products)
             {
                 // create a button, with a static style
                 Button button = new Button();
@@ -232,10 +234,13 @@ namespace Simulator
                 panelBuild.Children.Add(button);
             }
         }
+
         /// <summary>
-        /// Initialize the panel prod.
+        /// Initialize the panel stock.
         /// </summary>
-        public void InitPanelProd()
+        /// <param name="panelToModify">Panel to modify.</param>
+        /// <param name="labelPrefixe">Label Prefixe.</param>
+        public void InitPanel(StackPanel panelToModify, string labelPrefixe)
         {
             //On récupère la liste des produits
             String[] products = this.enterprise.NamesOfProducts;
@@ -261,7 +266,7 @@ namespace Simulator
 
                 // Création d'un label avec le bon style et ajout au StackPanel
                 Label label = new Label();
-                label.Name = type + "sProd";
+                label.Name = type + labelPrefixe;
                 label.Content = "0";
                 label.Style = System.Windows.Application.Current.TryFindResource("legend") as Style;
                 panel.Children.Add(label);
@@ -269,7 +274,7 @@ namespace Simulator
                 border.Child = panel;
 
                 // Ajouter la bordure au panel parent (panelProd)
-                panelProd.Children.Add(border);
+                panelToModify.Children.Add(border);
             }
         }
 
@@ -303,6 +308,23 @@ namespace Simulator
                 if (test is Label label)
                 {
                     label.Content = enterprise.GetProduction(p.Name).ToString();
+                }
+            });
+        }
+
+        /// <summary>
+        /// Update the stock of a product.
+        /// </summary>
+        /// <param name="productType">Product type.</param>
+        public void ProductStockChange(string productType)
+        {
+            string name = productType + "Stock";
+            Dispatcher.Invoke(() =>
+            {
+                var test = UIChildFinder.FindChild(panelStock, name, typeof(Label));
+                if (test is Label label)
+                {
+                    label.Content = enterprise.GetStock(productType).ToString();
                 }
             });
         }

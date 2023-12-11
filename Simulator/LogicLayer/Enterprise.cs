@@ -67,7 +67,7 @@ namespace LogicLayer
             {
                 employees = value;
                 //Notify the changes to the observator.
-                NotifyEmployeesChange(FreeEmployees,value);
+                NotifyEmployeesChange(FreeEmployees, value);
             }
         }
         /// <summary>
@@ -127,7 +127,7 @@ namespace LogicLayer
         /// <param name="data"></param>
         private void TimerSecondTick(object? data)
         {
-            UpdateBuying();    
+            UpdateBuying();
         }
 
         /// <summary>
@@ -196,8 +196,7 @@ namespace LogicLayer
             Materials -= p.MaterialsNeeded; // consume materials
             // start the building...
             workshop.StartProduction(p, this);
-            ProductProductionStart(p);
-
+            NotifyProductionStart(p);
         }
 
         /// <summary>
@@ -213,10 +212,11 @@ namespace LogicLayer
             {
                 stock.Add(product);
                 workshop.Remove(product);
+                //Update the product stock
+                NotifyProductStockChange(product.Name);
             }
-            //Mise à jour du stock
+            //Mise à jour du stock total
             NotifyStockChange(this.TotalStock);
-
         }
 
         /// <summary>
@@ -258,13 +258,17 @@ namespace LogicLayer
         {
             foreach (string product in productFactory.Products)
             {
-                if (clients.WantToBuy(product)) //Des clients veulent acheter le produit
+                if (clients.WantToBuy(product)) //Some clients want to buy the product.
                 {
                     TrySell(product);
                 }
             }
         }
 
+        /// <summary>
+        /// Try to sell a product of a certain type.
+        /// </summary>
+        /// <param name="type">Product type.</param>
         private void TrySell(string type)
         {
             Product? p = stock.Find(type);
@@ -273,10 +277,10 @@ namespace LogicLayer
                 stock.Remove(p);
                 Money += p.Price;
                 clients.Buy(type);
+                //Notify the observers of the changes.
+                NotifyStockChange(this.TotalStock);
+                NotifyProductStockChange(type);
             }
-            //Mise à jour du stock
-            NotifyStockChange(this.TotalStock);
-
         }
 
         /// <summary>
@@ -298,6 +302,10 @@ namespace LogicLayer
             return clients.GetAskFor(type);
         }
 
+        /// <summary>
+        /// Function trigered at every end of month.
+        /// </summary>
+        /// <param name="state"></param>
         private void EndOfMonth(object? state)
         {
             PayEmployees();
@@ -305,7 +313,7 @@ namespace LogicLayer
         }
 
         /// <summary>
-        /// Notify the corporate observer that the amount of money has changed.
+        /// Notify the corporate observers that the amount of money has changed.
         /// </summary>
         /// <param name="money"></param>
         public void MoneyChange(int money)
@@ -314,7 +322,7 @@ namespace LogicLayer
         }
 
         /// <summary>
-        /// Notify the corporate observer that the amount of materiels has changed.
+        /// Notify the corporate observers that the amount of materiels has changed.
         /// </summary>
         /// <param name="materials"></param>
         public void MaterialChange(int materials)
@@ -325,9 +333,8 @@ namespace LogicLayer
         /// <summary>
         /// Notify the corporate observer that the number of employees has changed.
         /// </summary>
-        /// <param name="free"></param>
-        /// <param name="total"></param>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="free">Employee that are not working.</param>
+        /// <param name="total">Total of employees.</param>
         public void EmployeesChange(int free, int total)
         {
             NotifyEmployeesChange(free, total);
@@ -337,7 +344,6 @@ namespace LogicLayer
         /// Notify the corporate observer that the amount of money has changed.
         /// </summary>
         /// <param name="stock"></param>
-        /// <exception cref="NotImplementedException"></exception>
         public void StockChange(int stock)
         {
             NotifyStockChange(stock);
@@ -345,8 +351,8 @@ namespace LogicLayer
 
         /// <summary>
         /// Notify the corporate observers that the clients needs has changed.
-        /// <param name="type"></param>
-        /// <param name="need"></param>
+        /// <param name="type">Type of the need that changed.</param>
+        /// <param name="need">New need.</param>
         /// <exception cref="NotImplementedException"></exception>
         public void ClientNeedsChange(string type, int need)
         {
@@ -356,7 +362,7 @@ namespace LogicLayer
         /// <summary>
         /// Notify the corporate observers that the production of a product is done.
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="product">Product producted.</param>
         public void ProductProductionDone(Product product)
         {
             // update informations about productions
@@ -367,16 +373,27 @@ namespace LogicLayer
                 stock.Add(prod);
                 workshop.Remove(prod);
             }
+            //Notify the observors that the stock changed
+            NotifyProductStockChange(product.Name);
             NotifyProductionDone(product);
         }
 
         /// <summary>
         /// Notify the corporate observers that the production of a product has just started.
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="product">Product whose production started.</param>
         public void ProductProductionStart(Product product)
         {
             NotifyProductionStart(product);
+        }
+
+        /// <summary>
+        /// Notify the corporate that the stock of a product changed.
+        /// </summary>
+        /// <param name="productType">Type of the product.</param>
+        public void ProductStockChange(string productType)
+        {
+            NotifyProductStockChange(productType);
         }
 
         /// <summary>
@@ -389,8 +406,6 @@ namespace LogicLayer
         }
 
         #endregion
-
-
 
     }
 }

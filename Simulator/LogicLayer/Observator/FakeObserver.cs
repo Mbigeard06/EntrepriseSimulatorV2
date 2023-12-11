@@ -53,5 +53,10 @@ namespace LogicLayer.Observator
         {
             throw new NotImplementedException();
         }
+
+        public void ProductStockChange(string productType)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
