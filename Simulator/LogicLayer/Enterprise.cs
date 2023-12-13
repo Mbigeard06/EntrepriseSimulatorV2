@@ -343,7 +343,7 @@ namespace LogicLayer
         /// <summary>
         /// Notify the corporate observer that the amount of money has changed.
         /// </summary>
-        /// <param name="stock"></param>
+        /// <param name="stock">New stock.</param>
         public void StockChange(int stock)
         {
             NotifyStockChange(stock);
@@ -373,7 +373,7 @@ namespace LogicLayer
                 stock.Add(prod);
                 workshop.Remove(prod);
             }
-            //Notify the observors that the stock changed
+            //Notify the observors that the stock has changed
             NotifyProductStockChange(product.Name);
             NotifyProductionDone(product);
         }

@@ -20,38 +20,40 @@ namespace LogicLayer.Observator
         /// <summary>
         /// Trigered when the corporate stock of materiels changes.
         /// </summary>
-        /// <param name="materiels"></param>
+        /// <param name="materiels">New number of materiels</param>
         public void MaterialChange(int materials);
 
         /// <summary>
         /// Trigered when the numbrer of employees changes.
         /// </summary>
-        /// <param name="free"></param>
-        /// <param name="total"></param>
+        /// <param name="free">Employees free</param>
+        /// <param name="total">Total of employees</param>
         public void EmployeesChange(int free, int total);
 
         /// <summary>
         /// Trigered when the global stock changes.
         /// </summary>
-        /// <param name="stock"></param>
+        /// <param name="stock">New stock</param>
         public void StockChange(int stock);
 
         /// <summary>
         /// Triggered when the clients needs changes.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="need"></param>
+        /// <param name="type">Type of the need</param>
+        /// <param name="need">New need</param>
         public void ClientNeedsChange(string type, int need);
 
         /// <summary>
-        /// Trigered when the production of a product is done.
+        /// Triggered when the production of a product is done
         /// </summary>
+        /// <param name="product">Product whose production is done</param>
         /// <returns>The Product</returns>
         public void ProductProductionDone(Product product);
 
         /// <summary>
         /// Trigered when the production of a product starts.
         /// </summary>
+        /// <param name="product">Product whose production has started.</param>
         /// <returns>The product</returns>
         public void ProductProductionStart(Product product);
 

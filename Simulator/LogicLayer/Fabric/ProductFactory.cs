@@ -45,7 +45,7 @@ namespace LogicLayer.Fabric
         /// <summary>
         /// Return the products registred.
         /// </summary>
-        /// <returns>List of the products</returns>
+        /// <returns>List of the products.</returns>
         public string[] Products { get { return products.Keys.ToArray(); } }
 
         /// <summary>

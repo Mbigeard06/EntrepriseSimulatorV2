@@ -22,6 +22,7 @@ namespace LogicLayer.Fabric
             productFactory.Register("bike", new BikeCreator());
             productFactory.Register("scooter", new ScooterCreator());
             productFactory.Register("car", new CarCreator());
+            productFactory.Register("telec", new TelecCreator());
         }
 
         /// <summary>
@@ -33,9 +34,11 @@ namespace LogicLayer.Fabric
             clientService.InitProbs("car", 10);
             clientService.InitProbs("scooter", 14);
             clientService.InitProbs("bike", 20);
+            clientService.InitProbs("telec", 26);
             clientService.InitNeeds("car", 0);
             clientService.InitNeeds("bike", 0);
             clientService.InitNeeds("scooter", 0);
+            clientService.InitNeeds("telec", 0);
         }
     }
 }
